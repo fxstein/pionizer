@@ -1,0 +1,58 @@
+# Get HW model and versions
+# https://elinux.org/RPi_HardwareHistory
+cat /proc/cpuinfo
+
+# Version of Debian
+cat /etc/debian_version
+
+# OS Release
+cat /etc/os-release
+
+# Kernel version
+uname -a
+
+# Detect installed hats
+ls /proc/device-tree/hat/
+cat /proc/device-tree/hat/product
+
+# Run PI4 off external SSD
+# https://www.tomshardware.com/news/boot-raspberry-pi-from-usb,39782.html
+
+sudo fdisk -l
+
+# partition external drive
+sudo fdisk /dev/sda
+# or https://superuser.com/questions/332252/how-to-create-and-format-a-partition-using-a-bash-script
+
+# File systems
+df -h
+
+# Update system
+sudo apt update
+sudo apt upgrade --assume-yes
+
+# Agron fan hat
+# install
+curl https://download.argon40.com/argon1.sh | bash
+# configure
+# default: 55C:10% 60C:55% 65C:100%
+argonone-config
+# uninstall
+argonone-uninstall
+
+# Speed test SD card
+# write
+dd if=/dev/zero of=~/test.tmp bs=500K count=1024
+# clear cache
+sync; echo 3 | sudo tee /proc/sys/vm/drop_caches
+# read
+dd if=~/test.tmp of=/dev/null bs=500K count=1024
+
+# Seeting up sense hat 
+# add to /boot/config.txt
+dtoverlay=rpi-sense
+# on RPI 4
+hdmi_force_hotplug=1 
+
+sudo apt-get install sense-hat
+
